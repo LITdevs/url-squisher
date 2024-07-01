@@ -1,0 +1,12 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <title>nya.tf manager</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <% for (let storedurl of storedurls) { %>
+            <p><a href="/<%= storedurl.path %>/admin"><%= storedurl.path %></a> <span style="font-size: smaller">[<a href="<%= storedurl.target %>"><%= storedurl.target %></a>]</span></p>
+        <% } %>
+    </body>
+</html>

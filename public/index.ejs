@@ -1,0 +1,87 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <title>nya.tf</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <% if (urlNotFound) { %> <meta name="robots" content="noindex" /> <% } %>
+
+        <style>
+            html {
+                background-color: #eee;
+                color: #666;
+                font-family: sans-serif;
+            }
+            body {
+                margin: 8em 0 0;
+                display: flex;
+                align-items: center;
+                flex-direction: column;
+            }
+            .pwarea {
+                margin-top: 2em;
+                max-width: fit-content;
+            }
+            .infobox {
+                padding-top: 3em;
+                border-radius: 10px;
+                width: 40vw;
+                background-color: #fff;
+            }
+            .logos {
+                display: flex;
+                position: absolute;
+                justify-content: center;
+                width: 40%;
+
+                top: 4em;
+            }
+            .logos img {
+                max-height: 6em;
+            }
+
+            .explanation {
+                margin: 0 1em 1em;
+                font-size: 28px;
+                text-align: center;
+            }
+
+            .prideRadial {
+                background: repeating-conic-gradient(aqua 0deg 10deg, pink 10deg 20deg, white 20deg 30deg, pink 30deg 40deg);
+                background-size: 200% 100%;
+                mask-image: radial-gradient(circle, black 20%, transparent 40%);
+                width:45em;
+                height:50em;
+
+                z-index: -1;
+                position:absolute;
+                top:-33em;
+                left:0;
+                right:0;
+                margin:0 auto;
+
+                transform: rotate(90deg)
+            }
+        </style>
+    </head>
+    <body>
+        <div class="infobox">
+            <div class="prideRadial"></div>
+            <div class="logos">
+                <img src="https://logo.litdevs.org/api/vukky">
+                <img src="/nineball.svg">
+            </div>
+            <p class="explanation">
+                <% if (urlNotFound) { %>
+                    Link not found &mdash; check spelling.
+                <% } else { %>
+                    LIT Devs, 015, and ninePLUS use nya.tf to provide silly links that are easier to type and remember.
+                <% } %>
+            </p>
+        </div>
+        <span class="pwarea">
+            <input id="adminpass" type="password" placeholder="admin password">
+            <button onclick="document.cookie = `admin=${document.querySelector('#adminpass').value}`;document.location.pathname = '/admin'">log in</button>
+        </span>
+        <p>&copy; LIT Devs 2024</p>
+    </body>
+</html>

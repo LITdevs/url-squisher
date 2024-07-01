@@ -1,0 +1,18 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <title>nya.tf manager</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <h1>Manage <%= storedurl.path %></h1>
+        <h2>Change target</h2>
+        <form method="post">
+            <input type="text" placeholder="target" name="target" value="<%= storedurl.target %>"><input type="submit">
+        </form>
+        <h2>Delete URL</h2>
+        <form action="/<%= storedurl.path %>/admin/delete" method="post" onsubmit="return confirm('You are about to delete this URL. Are you sure?')">
+            <input type="submit">
+        </form>
+    </body>
+</html>
