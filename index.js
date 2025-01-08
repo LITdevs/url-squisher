@@ -76,10 +76,13 @@ app.post('/admin/shorten', async (req, res) => {
 })
 
 app.get('/admin/all', async (req, res) => {
+    if(!req.admin) return res.redirect('/');
     res.render("list", {storedurls: await StoredURLs.find({ "generated": { $exists: false } }).sort({"path": 1}).exec()})
 })
 
 app.get('/:url/admin', async (req, res) => {
+    if(!req.admin) return res.redirect('/');
+
     const storedurl = await StoredURLs.findOne({path: req.params.url}).exec();
     if(!storedurl) res.render('index', {urlNotFound: true});
 
@@ -87,6 +90,8 @@ app.get('/:url/admin', async (req, res) => {
 });
 
 app.post('/:url/admin', async (req, res) => {
+    if(!req.admin) return res.redirect('/');
+
     const storedurl = await StoredURLs.findOne({path: req.params.url}).exec();
     if(!storedurl) res.render('index', {urlNotFound: true});
 
@@ -97,6 +102,8 @@ app.post('/:url/admin', async (req, res) => {
 });
 
 app.post('/:url/admin/delete', async (req, res) => {
+    if(!req.admin) return res.redirect('/');
+
     await StoredURLs.findOneAndDelete({path: req.params.url}).exec();
     return res.redirect(`/admin`);
 });
