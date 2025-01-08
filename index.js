@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const cookieParser = require('cookie-parser');
 const {join} = require("node:path");
 const {Schema} = require("mongoose");
+const charNames = require("./paddings.json");
 
 require('dotenv').config();
 app.use(express.static('public/resources'));
@@ -19,10 +20,15 @@ app.use((req, res, next) => {
 
 const StoredURLSchema = new Schema({
     path: String,
-    target: String
+    target: String,
+    generated: Boolean
 });
 StoredURLSchema.index({path: 'text'});
 const StoredURLs = mongoose.model('url', StoredURLSchema);
+
+function randomPath() {
+    return charNames[Math.floor(Math.random() * charNames.length)] + "-" + (Math.random() + 1).toString(36).substring(7)
+}
 
 app.get('/', (req, res) => {
     res.render('index', {urlNotFound: false});
@@ -48,8 +54,29 @@ app.post('/admin', async (req, res) => {
     return res.redirect(`/${storingurl.path}/admin`);
 });
 
+app.post('/admin/shorten', async (req, res) => {
+    if(!req.admin || !req.body.target) return res.status(999).send({message: "baka"});
+
+    let path; let exists = true;
+    while (exists) { // I'm going to be honest I don't know how to do this type of thing without a while loop
+        path = randomPath();
+        exists = (await StoredURLs.findOne({path}).exec()) !== null
+    }
+
+    let storingurl = new StoredURLs();
+    storingurl.path = path;
+    storingurl.target = req.body.target;
+    storingurl.generated = true;
+    await storingurl.save();
+
+    return res.status(200).send({
+        "url": `${process.env.BASE_URL}/${path}`,
+        path
+    })
+})
+
 app.get('/admin/all', async (req, res) => {
-    res.render("list", {storedurls: await StoredURLs.find({}).sort({"path": 1}).exec()})
+    res.render("list", {storedurls: await StoredURLs.find({ "generated": { $exists: false } }).sort({"path": 1}).exec()})
 })
 
 app.get('/:url/admin', async (req, res) => {
