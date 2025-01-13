@@ -27,7 +27,7 @@ StoredURLSchema.index({path: 'text'});
 const StoredURLs = mongoose.model('url', StoredURLSchema);
 
 function randomPath() {
-    return /*charNames[Math.floor(Math.random() * charNames.length)] + "-" + */ (Math.random() + 1).toString(36).substring(7)
+    return charNames[Math.floor(Math.random() * charNames.length)] + "-" + (Math.random() + 1).toString(36).substring(7)
 }
 
 app.get('/', (req, res) => {
