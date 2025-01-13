@@ -1,5 +1,5 @@
 const express = require('express')
-const app = express()
+const app = express();
 const mongoose = require("mongoose");
 const cookieParser = require('cookie-parser');
 const {join} = require("node:path");
@@ -30,8 +30,9 @@ function randomPath() {
     return charNames[Math.floor(Math.random() * charNames.length)] + "-" + (Math.random() + 1).toString(36).substring(7)
 }
 
-app.get('/', (req, res) => {
-    res.render('index', {urlNotFound: false});
+app.get('/', async (req, res) => {
+    const count = await StoredURLs.countDocuments({});
+    res.render('index', {urlNotFound: false, count});
 });
 
 app.get('/admin', (req, res) => {
